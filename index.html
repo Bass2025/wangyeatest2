@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化妝水</title>
+    <style>
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .tabs-container {
+            text-align: center;
+            background: #ffffff;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-buttons {
+            display: inline-flex;
+            justify-content: center;
+            width: 100%;
+            padding: 0;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            cursor: pointer;
+            background: #fff;
+            transition: all 0.3s;
+            border: none;
+            outline: none;
+            font-weight: bold;
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .tab-button:not(.active):hover {
+            background: #e0e0e0;
+        }
+        
+        .tab-button.active {
+            background: #b6b6b6;
+            color: #fff;
+        }
+        
+        .image-display {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .image-display img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+        
+        .scrolling-images-container {
+            overflow: auto;
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .scrolling-images {
+            transition: transform 0.5s ease;
+            will-change: transform;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .third-scrolling-images {
+            transition: transform 0.5s ease;
+            will-change: transform;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .scrolling-images img {
+            height: auto;
+            max-height: 100%;
+        }
+        
+        .third-scrolling-images img {
+            height: auto;
+            max-height: 100%;
+        }
+        
+        .third-scrolling-images-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .large-image-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .large-images {
+            transition: transform 0.5s ease;
+            will-change: transform;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .large-images img {
+            max-width: auto;
+            max-height: 800px;
+            /* 或者您希望的高度 */
+            margin: 0 auto;
+            /* 確保圖片水平居中 */
+        }
+        
+        .featured-scrolling-images-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .featured-scrolling-images {
+            transition: transform 0.5s ease;
+            will-change: transform;
+            display: flex;
+        }
+        
+        .featured-scrolling-images img {
+            max-width: 100%;
+            max-height: 100%;
+            /* Add additional styles if needed */
+        }
+        
+        .image-description,
+        .product-description {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        
+        .description-link a {
+            padding: 10px 20px;
+            background-color: #5C6BC0;
+            color: #fff;
+            border-radius: 15px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .centered-title,
+        .centered-text {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .effects-list {
+            list-style-type: disc;
+            padding: 0;
+            margin: 40px auto;
+            display: table;
+        }
+        
+        .effects-list li {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        /* Additional styles for a more premium look */
+        
+        h2,
+        h3 {
+            color: #5C6BC0;
+            /* Give titles a unique color */
+        }
+        
+        ul.effects-list {
+            padding-left: 0;
+        }
+        
+        ul.effects-list li {
+            list-style: none;
+            /* Remove bullets */
+            padding-left: 1.5em;
+            text-indent: -1.5em;
+            /* Align text */
+        }
+        
+        ul.effects-list li:before {
+            content: "•";
+            /* Add custom bullet */
+            padding-right: 5px;
+            color: #5C6BC0;
+            /* Bullet color */
+        }
+        /* Remove gap between inline-block elements */
+        
+        .scrolling-images img {
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tabs-container">
+        <div class="tab-buttons">
+            <!-- 分頁按鈕 -->
+            <div id="tab-home" class="tab-button" onclick="showTab('home')">首頁</div>
+            <div id="tab-toner" class="tab-button" onclick="showTab('toner')">化妝水</div>
+            <div id="tab-serum" class="tab-button" onclick="showTab('serum')">精華液</div>
+            <div id="tab-luyii" class="tab-button" onclick="showTab('luyii')">乳液</div>
+            <!-- ...其他按鈕 -->
+        </div>
+    </div>
+    <!-- 首页内容 -->
+    <div id="content-home" class="tab-content">
+        <!-- 插入视频 -->
+        <video width="100%" controls>
+            <source src="img/影片1.mp4" type="video/mp4">
+            您的浏览器不支持 HTML5 video 标签。
+        </video>
+        <div class="home-intro">
+            <h2>基礎保養品介紹</h2>
+            <p>每個不認真保養的日子，都是對你美貌的辜負。</p>
+        </div>
+    </div>
+    <div id="content-luyii" class="tab-content">
+        <h1 style="text-align: center;">乳液</h1>
+        <div class="image-display">
+            <img src="img/圖片9.png" alt="乳液圖片">
+        </div>
+        <h1 style="text-align: center;">保濕乳液</h1>
+        <div class="scrolling-images-container" id="scrolling-lotion-images-container">
+            <div class="scrolling-images" id="scrolling-lotion-images">
+                <img src="img/圖片10.webp" alt="保濕乳液滾動圖片1">
+                <img src="img/圖片10-1.webp" alt="保濕乳液滾動圖片2">
+                <!-- 可以添加更多圖片 -->
+
+
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>主要在睡前保養時使用，是乳液當中最常見的類型，所以市面上有許多保濕乳液的相關產品，不只早晚的固定保養，平時若是擔心皮膚過於乾燥，補妝時皆可使用，不論膚質、年齡或是化妝的頻率，每個人都適合擁有一瓶隨身攜帶的保濕乳液。 功效：保持皮膚濕潤的乳液，給皮膚水份和油份，保持健康的狀態
+
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.cerave.com.tw/products/lotion.html">購物連結</a>
+            </div>
+        </div>
+        <!-- 在購物連結下方新增的滾動式照片容器 -->
+        <div class="scrolling-images-container" id="new-lotion-images-container">
+            <div class="scrolling-images" id="new-lotion-images">
+                <!-- 新增的圖片 -->
+                <img src="img/圖片11.webp" alt="新圖片1">
+                <img src="img/圖片11-1.webp" alt="新圖片2">
+                <!-- 若需要，可再增加更多圖片 -->
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>防曬乳液不適合在睡前保養時使用，因為抗紫外線的成分，對皮膚來說有不小的負擔，通常為了能具備抗汗效果，防曬乳液的成分很容易殘留在皮膚上，使用後必須使用卸妝乳確實地完全卸掉。 功效：不只有讓皮膚保濕的作用，更是能避免曬黑的乳液，無論是因日曬而造成的斑，或是一般的雀斑，都有預防生長的效果
+
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.lrp.com.tw/Product/Content?strProductID=MB445000">購物連結</a>
+            </div>
+        </div>
+    </div>
+    <!-- 精華液的內容 -->
+    <div id="content-serum" class="tab-content">
+        <h1 style="text-align: center;">精華液</h1>
+        <!-- 精華液的介紹和圖片等等 -->
+        <!-- 新增的圖片 -->
+        <div class="image-display">
+            <img src="img/圖片5.jpeg" alt="精華液圖片">
+        </div>
+        <!-- 更多內容 -->
+        <h1 style="text-align: center;">水相精華</h1>
+        <div class="scrolling-images-container">
+            <div class="scrolling-images" id="scrolling-serum-images">
+                <!-- 滾動圖片 -->
+                <img src="img/圖片6.webp" alt="精華液滾動圖片1">
+                <img src="img/圖片6-1.webp" alt="精華液滾動圖片2">
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>這類型的精華液多訴求保濕為主，質地通常會呈現透明液狀。 功效：快速補充肌膚水分，改善因乾燥引起的敏感、暗沈、細紋等問題膚況。
+
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.lrp.com.tw/Product/Content?strProductID=TWMB049200">購物連結</a>
+            </div>
+        </div>
+
+        <h1 style="text-align: center;">油相精華</h1>
+        <div class="large-image-container" id="large-serum-images-container">
+            <div class="large-images" id="large-serum-images">
+                <img src="img/圖片7.jpg" alt="精華液滾動圖片3">
+                <img src="img/圖片7-1.webp" alt="精華液滾動圖片4">
+                <!-- ...可能的其他圖片 -->
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>精華油是近幾年特別受寵的品項，成分多萃取自天然植物，這類型的精華，除了直接單獨使用外，也可以視個人膚況、氣溫混搭其它產品。 功效：改善缺水狀態，增加肌膚柔軟度、彈性。
+
+
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.lrp.com.tw/Product/Content?strProductID=TWMB049200">購物連結</a>
+            </div>
+        </div>
+        <h1 style="text-align: center;">水油並存精華</h1>
+        <div class="featured-scrolling-images-container">
+            <div class="featured-scrolling-images" id="featured-scrolling-images">
+                <img src="img/圖片8.jpg" alt="特色圖片1">
+                <img src="img/圖片8-1.jpg" alt="特色圖片2">
+                <!-- ...更多圖片如果需要 -->
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>集結精華的高效滲透、精油的絲滑潤澤雙重特性，親膚性佳，質地多會呈現凝露狀、乳狀。 功效：對細紋、乾燥有很好的修復作用外，也有助油水平衡，讓膚況更為穩定。
+
+
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.clarins.com.tw/dsset/超級精華-黃金雙激萃-80025862.html?gad_source=1&gclid=EAIaIQobChMI09zLo_ChggMVCAt7Bx2pJwS9EAQYASABEgLm-vD_BwE&gclsrc=aw.ds">購物連結</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 化妝水内容 -->
+    <div id="content-toner" class="tab-content">
+        <!-- 添加化妝水标题 -->
+        <h1 style="text-align: center;">化妝水</h1>
+        <div class="image-display">
+            <!-- 主要圖片 -->
+            <img src="img/圖片1.jpeg" alt="主要圖片">
+        </div>
+
+        <!-- 添加礦植物水标题 -->
+        <h1 style="text-align: center;">礦植物水</h1>
+        <div class="scrolling-images-container">
+            <div class="scrolling-images" id="scrolling-images">
+                <!-- 可滾動的圖片 -->
+                <img src="img/圖片2.jpg" alt="滾動圖片1">
+                <img src="img/圖片2-1.jpg" alt="滾動圖片2">
+                <!-- ...其他圖片 -->
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>這類化妝水用途在於給予水分帶來濕潤效果，以及為肌膚稍微的舒緩，不需期待額外太多的功效。也因為他的單純，很適合特別肌膚容易敏感的人。此外，如果後續沒有再補上油相的保養成分將水上鎖，1-2 分鐘蒸散後幾乎等於用清水洗臉一般，保濕效果相當有限。 功效：保濕、舒緩
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.kiehls.com.tw/product/化妝水/金盞花植物精華化妝水%20–%20淨膚神水%2F化妝水推薦/KLKR00006.html
+                ">購物連結</a>
+            </div>
+        </div>
+
+        <h1 class="centered-title">收斂水/潔膚水/控油抗痘水</h1>
+
+        <!-- 新增的两张滚动图片容器 -->
+        <div class="third-scrolling-images-container">
+            <div class="third-scrolling-images" id="third-scrolling-images">
+                <!-- 可滾動的圖片 -->
+                <img src="img/圖片3.webp" alt="滾動圖片1">
+                <img src="img/圖片3-1.webp" alt="滾動圖片2">
+                <!-- ...其他圖片 -->
+            </div>
+        </div>
+        <div class="product-description">
+            <h1>水用途通常在於讓毛孔較不明顯、降低臉上油光。
+            </h1>
+            <h3 class="centered-title">功效:</h3>
+            <!-- 新增的功效列表 -->
+            <ul class="effects-list">
+                <li>酒精→ 清涼感、二次清潔、收斂毛孔</li>
+                <li> 吸油粉末→ 控油</li>
+                <li>酸類→ 收斂毛孔、抗痘</li>
+                <li>金縷梅→ 收斂毛孔、舒緩</li>
+            </ul>
+            <!-- 購物連結 -->
+            <div class="description-link">
+                <a href="https://www.lrp.com.tw/Product/Content?strProductID=MB568600">購物連結</a>
+            </div>
+
+        </div>
+        <h1 class="centered-title">水精華/機能液</h1>
+        <div class="scrolling-images-container">
+            <div class="scrolling-images" id="new-scrolling-images">
+                <!-- 可滾動的圖片 -->
+                <img src="img/圖片4.jpeg" alt="滾動圖片1">
+                <img src="img/圖片4-1.jpg" alt="滾動圖片2">
+                <!-- ...其他圖片 -->
+            </div>
+        </div>
+        <div class="image-description">
+            <!-- 圖片介紹 -->
+            <h3>這一類的化妝水，基本上可以稱作「稀釋版」的精華液、與精華液的界線越來越模糊。 功效：保濕、舒緩、美白、抗老等功效的活性成分 / 植萃
+
+            </h3>
+            <div class="description-link">
+                <!-- 介紹的連結 -->
+                <a href="https://www.ipsa.com.tw/SalePage/Index/7006086
+                ">購物連結</a>
+            </div>
+
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                let currentIndexNewLotion = 0;
+                const newLotionImagesContainer = document.getElementById('new-lotion-images');
+                const newLotionImages = newLotionImagesContainer.getElementsByTagName('img');
+                const totalNewLotionImages = newLotionImages.length;
+
+                newLotionImagesContainer.style.width = `${totalNewLotionImages * 100}%`;
+                Array.from(newLotionImages).forEach(img => {
+                    img.style.width = `${100 / totalNewLotionImages}%`;
+                });
+
+                setInterval(() => {
+                    currentIndexNewLotion = (currentIndexNewLotion + 1) % totalNewLotionImages;
+                    const xPositionNewLotion = -(currentIndexNewLotion * (100 / totalNewLotionImages));
+                    newLotionImagesContainer.style.transform = `translateX(${xPositionNewLotion}%)`;
+                }, 3000); // 每3秒滾動到下一張圖片
+            });
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                let currentIndexLotion = 0;
+                const lotionImagesContainer = document.getElementById('scrolling-lotion-images');
+                const lotionImages = lotionImagesContainer.getElementsByTagName('img');
+                const totalLotionImages = lotionImages.length;
+
+                lotionImagesContainer.style.width = `${totalLotionImages * 100}%`;
+                Array.from(lotionImages).forEach(img => {
+                    img.style.width = `${100 / totalLotionImages}%`;
+                });
+
+                setInterval(() => {
+                    currentIndexLotion = (currentIndexLotion + 1) % totalLotionImages;
+                    const xPositionLotion = -(currentIndexLotion * (100 / totalLotionImages));
+                    lotionImagesContainer.style.transform = `translateX(${xPositionLotion}%)`;
+                }, 3000); // 每3秒滾動到下一張圖片
+            });
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                let currentIndexThird = 0;
+                const thirdImagesContainer = document.getElementById('third-scrolling-images');
+                const thirdImages = thirdImagesContainer.getElementsByTagName('img');
+                const totalThirdImages = thirdImages.length;
+
+                thirdImagesContainer.style.width = `${totalThirdImages * 100}%`;
+                Array.from(thirdImages).forEach(img => {
+                    img.style.width = `${100 / totalThirdImages}%`;
+                });
+
+                setInterval(() => {
+                    currentIndexThird = (currentIndexThird + 1) % totalThirdImages;
+                    const xPositionThird = -(currentIndexThird * (100 / totalThirdImages));
+                    thirdImagesContainer.style.transform = `translateX(${xPositionThird}%)`;
+                }, 3000); // 每3秒钟滚动到下一张图片
+            });
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // ...其他代碼保持不變...
+
+                // 特色滾動圖片代碼
+                let currentIndexFeatured = 0;
+                const featuredImagesContainer = document.getElementById('featured-scrolling-images');
+                const featuredImages = featuredImagesContainer.getElementsByTagName('img');
+                const totalFeaturedImages = featuredImages.length;
+
+                featuredImagesContainer.style.width = `${totalFeaturedImages * 100}%`;
+                Array.from(featuredImages).forEach(img => {
+                    img.style.width = `${100 / totalFeaturedImages}%`;
+                });
+
+                setInterval(() => {
+                    currentIndexFeatured = (currentIndexFeatured + 1) % totalFeaturedImages;
+                    const xPositionFeatured = -(currentIndexFeatured * (100 / totalFeaturedImages));
+                    featuredImagesContainer.style.transform = `translateX(${xPositionFeatured}%)`;
+                }, 3000);
+            });
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                let currentIndexSerum = 0;
+                const serumImagesContainer = document.getElementById('scrolling-serum-images');
+                const serumImages = serumImagesContainer.getElementsByTagName('img');
+                const totalSerumImages = serumImages.length;
+
+
+                serumImagesContainer.style.width = `${totalSerumImages * 100}%`;
+                Array.from(serumImages).forEach(img => {
+                    img.style.width = `${100 / totalSerumImages}%`;
+                });
+                setInterval(() => {
+                    currentIndexSerum = (currentIndexSerum + 1) % totalSerumImages;
+                    const xPositionSerum = -(currentIndexSerum * (100 / totalSerumImages));
+                    serumImagesContainer.style.transform = `translateX(${xPositionSerum}%)`;
+                }, 3000);
+            });
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // ...其他初始化代码...
+
+                // 新增大圖片滾動圖片的初始化
+                let currentIndexLarge = 0;
+                const largeImagesContainer = document.getElementById('large-serum-images');
+                const largeImages = largeImagesContainer.getElementsByTagName('img');
+                const totalLargeImages = largeImages.length;
+
+                largeImagesContainer.style.width = `${totalLargeImages * 100}%`;
+                Array.from(largeImages).forEach(img => {
+                    img.style.width = `${100 / totalLargeImages}%`;
+                });
+
+                setInterval(() => {
+                    currentIndexLarge = (currentIndexLarge + 1) % totalLargeImages;
+                    const xPositionLarge = -(currentIndexLarge * (100 / totalLargeImages));
+                    largeImagesContainer.style.transform = `translateX(${xPositionLarge}%)`;
+                }, 3000);
+            });
+
+            function showTab(selectedTab) {
+                // 隐藏所有内容
+                var contents = document.getElementsByClassName('tab-content');
+                for (var i = 0; i < contents.length; i++) {
+                    contents[i].style.display = 'none';
+                }
+                // 移除所有标签的active类
+                var tabs = document.getElementsByClassName('tab-button');
+                for (var i = 0; i < tabs.length; i++) {
+                    tabs[i].classList.remove('active');
+                }
+                // 显示选中的标签对应的内容并添加active类
+                document.getElementById('content-' + selectedTab).style.display = 'block';
+                document.getElementById('tab-' + selectedTab).classList.add('active');
+            }
+            let currentIndex = 0;
+            const imagesContainer = document.getElementById('scrolling-images');
+            const images = imagesContainer.children;
+            const totalImages = images.length;
+
+
+            Array.from(images).forEach(img => {
+                img.style.width = `${100 / totalImages}%`;
+            });
+
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalImages;
+
+                const xPosition = -(currentIndex * (100 / totalImages));
+                imagesContainer.style.transform = `translateX(${xPosition}%)`;
+            }, 3000);
+            showTab('home');
+            document.addEventListener('DOMContentLoaded', (event) => {
+                let currentIndexNew = 0;
+                const newImagesContainer = document.getElementById('new-scrolling-images');
+                const newImages = newImagesContainer.getElementsByTagName('img');
+                const totalNewImages = newImages.length;
+                newImagesContainer.style.width = `${totalNewImages * 100}%`;
+                Array.from(newImages).forEach(img => {
+                    img.style.width = `${100 / totalNewImages}%`;
+                });
+                setInterval(() => {
+                    currentIndexNew = (currentIndexNew + 1) % totalNewImages;
+                    const xPositionNew = -(currentIndexNew * (100 / totalNewImages));
+                    newImagesContainer.style.transform = `translateX(${xPositionNew}%)`;
+                }, 3000);
+            });
+        </script>
+</body>
+
+</html>
